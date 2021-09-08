@@ -116,11 +116,10 @@ func (c *Collector) collect(ch chan<- prometheus.Metric) {
 		m.gauge(c.nameDesc, 1, v.DisplayName)
 		m.gauge(c.stateDesc, 1, v.State)
 
-		// detailed information is not available for sleeping or in
-		// service vehicles.
-		// if v.State != "online" {
-		// 	continue
-		// }
+		// detailed information is not available for sleeping or in service vehicles.
+		if v.State != "online" || v.InService {
+			continue
+		}
 
 		vv, err := tesla.GetVehicleData(c.client, t, v.ID)
 		if err != nil {

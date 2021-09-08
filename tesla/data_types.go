@@ -31,7 +31,7 @@ type Vehicle struct {
 	Color                  interface{} `json:"color"`
 	Tokens                 []string    `json:"tokens"`
 	State                  string      `json:"state"`
-	InService              interface{} `json:"in_service"`
+	InService              bool        `json:"in_service"`
 	IDS                    string      `json:"id_s"`
 	CalendarEnabled        bool        `json:"calendar_enabled"`
 	BackseatToken          interface{} `json:"backseat_token"`
@@ -203,8 +203,8 @@ type VehicleStateSoftwareUpdate struct {
 type VehicleStateSpeedLimitMode struct {
 	Active          bool    `json:"active"`
 	CurrentLimitMph float64 `json:"current_limit_mph"`
-	MaxLimitMph     int     `json:"max_limit_mph"`
-	MinLimitMph     int     `json:"min_limit_mph"`
+	MaxLimitMph     float64 `json:"max_limit_mph"`
+	MinLimitMph     float64 `json:"min_limit_mph"`
 	PinCodeSet      bool    `json:"pin_code_set"`
 }
 
