@@ -15,6 +15,7 @@ import (
 type Collector struct {
 	email    string
 	password string
+	refresh  bool
 	expire   time.Duration
 	client   *http.Client
 	m        *sync.RWMutex
@@ -48,6 +49,7 @@ func NewCollector(email, password string, expire time.Duration) *Collector {
 	return &Collector{
 		email:                     email,
 		password:                  password,
+		refresh:                   false,
 		expire:                    expire,
 		client:                    client,
 		m:                         m,
@@ -102,10 +104,34 @@ func (c *Collector) collect(ch chan<- prometheus.Metric) {
 		t   *tesla.Token
 		err error
 	)
-	t, err = tesla.GetAndCacheToken(c.client, &c.email, &c.password)
-	if err != nil {
-		return
+
+	if c.refresh {
+		t, err = tesla.LoadCachedToken()
+		if err != nil {
+			log.Println("load token from cache err", err)
+			c.refresh = false
+			return
+		}
+		if t == nil {
+			log.Println("load token from cache is nil")
+			c.refresh = false
+			return
+		}
+	} else {
+		t, err = tesla.GetAndCacheToken(c.client, &c.email, &c.password)
+		if err != nil {
+			log.Println("Get token from auth login err", err)
+			c.refresh = false
+			return
+		}
+		if t == nil {
+			log.Println("Get token from auth login is nil")
+			c.refresh = false
+			return
+		}
+		c.refresh = true
 	}
+
 	vehicles, err := tesla.ListVehicles(c.client, t)
 	for _, v := range *vehicles {
 		m := metricMaker{ch: ch, vin: v.Vin}

@@ -13,21 +13,26 @@ import (
 )
 
 var s *exporter.Server
+var (
+	email    string
+	password string
+)
 
 func main() {
-	var email = flag.String("email", "", "tesla email address.")
-	var password = flag.String("password", "", "tesla account password.")
+	// var email = flag.String("email", "", "tesla email address.")
+	// var password = flag.String("password", "", "tesla account password.")
 	var internal = flag.Duration("expire", 30*time.Second, "expire cache metrics.")
+	var addr = flag.String("addr", "0.0.0.0:9610", "the server and port.")
 
 	flag.Parse()
 	// init collector
-	collector := exporter.NewCollector(*email, *password, *internal)
+	collector := exporter.NewCollector(email, password, *internal)
 	go collector.Refresh()
 	r := prometheus.NewRegistry()
 	if err := r.Register(collector); err != nil {
 		log.Fatal("Register collector failed with %w", err)
 	}
-	s = exporter.NewServer("9610", r)
+	s = exporter.NewServer(*addr, r)
 	go s.ListenAndServe()
 
 	// handle exit signal

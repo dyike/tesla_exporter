@@ -50,7 +50,7 @@ type VehiclesResponse struct {
 }
 
 // Mobile Enabled
-var MobileEnabledURL = "api/1/vehicles/%d/mobile_enabled"
+var MobileEnabledURL = "/api/1/vehicles/%d/mobile_enabled"
 
 type MobileEnabledResponse struct {
 	Response bool `json:"response"`

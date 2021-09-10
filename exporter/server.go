@@ -14,13 +14,13 @@ type Server struct {
 	httpServer *http.Server
 }
 
-func NewServer(port string, r *prometheus.Registry) *Server {
+func NewServer(addr string, r *prometheus.Registry) *Server {
 	mux := http.NewServeMux()
 	mux.Handle("/metrics", promhttp.InstrumentMetricHandler(
 		r, promhttp.HandlerFor(r, promhttp.HandlerOpts{}),
 	))
 	httpServer := &http.Server{
-		Addr:         ":" + port,
+		Addr:         addr,
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  120 * time.Second,
