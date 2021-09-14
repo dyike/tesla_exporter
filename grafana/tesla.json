@@ -1,0 +1,1461 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 5,
+    "iteration": 1631629752963,
+    "links": [],
+    "panels": [
+      {
+        "cacheTimeout": null,
+        "content": "<center><font size=\"66\" color=\"blue\">${tesla_name}</font></center>\n\n",
+        "datasource": "Prometheus",
+        "description": "",
+        "gridPos": {
+          "h": 4,
+          "w": 4,
+          "x": 0,
+          "y": 0
+        },
+        "id": 6,
+        "links": [],
+        "mode": "html",
+        "options": {},
+        "pluginVersion": "6.2.5",
+        "repeat": null,
+        "targets": [
+          {
+            "expr": "",
+            "format": "time_series",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "measurement": "ChargeState",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT last(\"battery_range\") FROM \"AllData\"",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "battery_range"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "last"
+                }
+              ]
+            ],
+            "tags": []
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Name",
+        "type": "text"
+      },
+      {
+        "content": "\n<center><font size=\"48\" color=\"green\">${software_version}</font></center>\n\n\n",
+        "datasource": "InfluxDB - Tesla",
+        "description": "",
+        "gridPos": {
+          "h": 4,
+          "w": 8,
+          "x": 4,
+          "y": 0
+        },
+        "id": 13,
+        "links": [],
+        "maxPerRow": null,
+        "mode": "html",
+        "options": {},
+        "repeat": "software_version",
+        "repeatDirection": "v",
+        "scopedVars": {
+          "software_version": {
+            "selected": true,
+            "text": "2021.24.5 41dfd8d1ba8b",
+            "value": "2021.24.5 41dfd8d1ba8b"
+          }
+        },
+        "targets": [
+          {
+            "alias": "kWhs",
+            "groupBy": [
+              {
+                "params": [
+                  "$interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "ConnectedOdometer"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "AllData",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT kWhs FROM (SELECT max(\"charge_energy_added\") AS kWhs FROM \"AllData\" WHERE (\"Connected\" = 'true') AND $timeFilter GROUP BY \"ConnectedOdometer\")",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "charge_energy_added"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "max"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "Connected",
+                "operator": "=",
+                "value": "true"
+              }
+            ]
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "软件版本号",
+        "type": "text"
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": false,
+        "colorPostfix": false,
+        "colorValue": true,
+        "colors": [
+          "#299c46",
+          "#FA6400",
+          "#d44a3a"
+        ],
+        "datasource": "Prometheus",
+        "description": "",
+        "format": "amp",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 4,
+          "x": 12,
+          "y": 0
+        },
+        "id": 2,
+        "interval": null,
+        "links": [],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "options": {},
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "sparkline": {
+          "fillColor": "rgba(31, 118, 189, 0.18)",
+          "full": false,
+          "lineColor": "rgb(31, 120, 193)",
+          "show": false
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "expr": "tesla_vehicle_charge_amps{vin=\"$vin\"}",
+            "format": "time_series",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "intervalFactor": 1,
+            "legendFormat": "available",
+            "measurement": "ChargeState",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"battery_level\") FROM \"AllData\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "battery_level"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          }
+        ],
+        "thresholds": "",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "充电amps",
+        "type": "singlestat",
+        "valueFontSize": "80%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "0 A",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": false,
+        "colorValue": true,
+        "colors": [
+          "#d44a3a",
+          "rgba(237, 129, 40, 0.89)",
+          "#C4162A"
+        ],
+        "datasource": "Prometheus",
+        "format": "volt",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 4,
+          "x": 16,
+          "y": 0
+        },
+        "id": 7,
+        "interval": null,
+        "links": [],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "options": {},
+        "pluginVersion": "6.2.5",
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "sparkline": {
+          "fillColor": "rgba(31, 118, 189, 0.18)",
+          "full": false,
+          "lineColor": "rgb(31, 120, 193)",
+          "show": false
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "expr": "tesla_vehicle_charge_volts{vin=\"$vin\"}",
+            "format": "time_series",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "intervalFactor": 1,
+            "measurement": "ChargeState",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT last(\"battery_level\") FROM \"AllData\"",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "battery_level"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "last"
+                }
+              ]
+            ],
+            "tags": []
+          }
+        ],
+        "thresholds": "",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "充电volt",
+        "type": "singlestat",
+        "valueFontSize": "80%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "0 V",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": false,
+        "colorValue": true,
+        "colors": [
+          "#d44a3a",
+          "rgba(237, 129, 40, 0.89)",
+          "#C4162A"
+        ],
+        "datasource": "Prometheus",
+        "format": "watth",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 4,
+          "x": 20,
+          "y": 0
+        },
+        "id": 28,
+        "interval": null,
+        "links": [],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "options": {},
+        "pluginVersion": "6.2.5",
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "sparkline": {
+          "fillColor": "rgba(31, 118, 189, 0.18)",
+          "full": false,
+          "lineColor": "rgb(31, 120, 193)",
+          "show": false
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "expr": "tesla_vehicle_charge_volts{vin=\"$vin\"} * tesla_vehicle_charge_amps{vin=\"$vin\"}",
+            "format": "time_series",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "intervalFactor": 1,
+            "legendFormat": "rate",
+            "measurement": "ChargeState",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT last(\"battery_level\") FROM \"AllData\"",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "battery_level"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "last"
+                }
+              ]
+            ],
+            "tags": []
+          }
+        ],
+        "thresholds": "",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "充电rate",
+        "type": "singlestat",
+        "valueFontSize": "80%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "0 Wh",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "cacheTimeout": null,
+        "content": "<center><font size=\"66\" color=\"green\">${tesla_state}</font></center>",
+        "datasource": "Prometheus",
+        "description": "",
+        "gridPos": {
+          "h": 4,
+          "w": 4,
+          "x": 0,
+          "y": 4
+        },
+        "id": 17,
+        "links": [],
+        "mode": "html",
+        "options": {},
+        "repeat": null,
+        "repeatDirection": "v",
+        "targets": [
+          {
+            "expr": "tesla_vehicle_state{vin=\"$vin\"}",
+            "format": "time_series",
+            "groupBy": [
+              {
+                "params": [
+                  "Connected"
+                ],
+                "type": "tag"
+              }
+            ],
+            "intervalFactor": 1,
+            "measurement": "AllData",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT sum(EA) FROM (SELECT max(\"charge_energy_added\") AS EA FROM \"AllData\" WHERE (\"Connected\" = 'true') AND $timeFilter GROUP BY \"Connected\", \"ConnectedOdometer\")",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "table",
+            "select": [
+              [
+                {
+                  "params": [
+                    "charge_energy_added"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "max"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "Connected",
+                "operator": "=",
+                "value": "true"
+              }
+            ]
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "状态",
+        "type": "text"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "Prometheus",
+        "decimals": 2,
+        "description": "",
+        "fill": 1,
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 4,
+          "y": 4
+        },
+        "id": 26,
+        "legend": {
+          "alignAsTable": true,
+          "avg": false,
+          "current": true,
+          "max": true,
+          "min": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "connected",
+        "options": {},
+        "paceLength": 10,
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "alias": "Climate Drain",
+            "expr": "tesla_vehicle_battery_estimated_miles{vin=\"$vin\"} * 1.61",
+            "format": "time_series",
+            "groupBy": [
+              {
+                "params": [
+                  "6h"
+                ],
+                "type": "time"
+              }
+            ],
+            "intervalFactor": 1,
+            "legendFormat": "预估",
+            "measurement": "AllData",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "lostenergy_climate"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "sum"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "expr": "tesla_vehicle_battery_ideal_miles{vin=\"$vin\"}  * 1.61",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "理想",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "充电 预估/理想 里程",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": 0,
+            "format": "lengthkm",
+            "label": "",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "cacheTimeout": null,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "Prometheus",
+        "description": "",
+        "fill": 1,
+        "gridPos": {
+          "h": 6,
+          "w": 6,
+          "x": 12,
+          "y": 4
+        },
+        "id": 27,
+        "legend": {
+          "alignAsTable": true,
+          "avg": false,
+          "current": false,
+          "max": true,
+          "min": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "connected",
+        "options": {},
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "alias": "Amps",
+            "yaxis": 1
+          },
+          {
+            "alias": "Volts",
+            "yaxis": 2
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "tesla_vehicle_charge_amps{vin=\"$vin\"}",
+            "format": "time_series",
+            "groupBy": [],
+            "intervalFactor": 1,
+            "legendFormat": "Amps",
+            "measurement": "AllData",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT SUM(EA) / (MAX(odometer) - MIN(odometer))*1000 AS WhPM FROM (SELECT max(\"charge_energy_added\") AS EA, max(\"odometer\") AS odometer FROM \"AllData\" WHERE (\"Connected\" = 'true') AND $timeFilter GROUP BY \"Connected\", \"ConnectedOdometer\")",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "table",
+            "select": [
+              [
+                {
+                  "params": [
+                    "odometer"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "difference"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "expr": "tesla_vehicle_charge_volts{vin=\"$vin\"}",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "Volts",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Amps / Volts",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": 2,
+            "format": "amp",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "decimals": 2,
+            "format": "volt",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "cacheTimeout": null,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "Prometheus",
+        "description": "",
+        "fill": 1,
+        "gridPos": {
+          "h": 6,
+          "w": 6,
+          "x": 18,
+          "y": 4
+        },
+        "id": 11,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": false,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "connected",
+        "options": {},
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "tesla_vehicle_charge_volts{vin=\"$vin\"} * tesla_vehicle_charge_amps{vin=\"$vin\"} / 1000",
+            "format": "time_series",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "measurement": "ChargeState",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT last(\"time_to_full_charge\") FROM \"AllData\" WHERE $timeFilter GROUP BY time($__interval) fill(0)",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "time_to_full_charge"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "last"
+                }
+              ]
+            ],
+            "tags": []
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Charge Rate",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": 2,
+            "format": "kwatth",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": false,
+        "colorValue": true,
+        "colors": [
+          "#1F60C4",
+          "rgba(237, 129, 40, 0.89)",
+          "#B877D9"
+        ],
+        "datasource": "Prometheus",
+        "decimals": 3,
+        "description": "",
+        "format": "lengthkm",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 4,
+          "x": 0,
+          "y": 8
+        },
+        "id": 29,
+        "interval": null,
+        "links": [],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "options": {},
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "repeatDirection": "v",
+        "sparkline": {
+          "fillColor": "rgba(31, 118, 189, 0.18)",
+          "full": false,
+          "lineColor": "rgb(31, 120, 193)",
+          "show": false
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "expr": "tesla_vehicle_odometer_miles_total{vin=\"$vin\"} * 1.61",
+            "format": "time_series",
+            "groupBy": [
+              {
+                "params": [
+                  "Connected"
+                ],
+                "type": "tag"
+              }
+            ],
+            "intervalFactor": 1,
+            "measurement": "AllData",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT sum(EA) FROM (SELECT max(\"charge_energy_added\") AS EA FROM \"AllData\" WHERE (\"Connected\" = 'true') AND $timeFilter GROUP BY \"Connected\", \"ConnectedOdometer\")",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "table",
+            "select": [
+              [
+                {
+                  "params": [
+                    "charge_energy_added"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "max"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "Connected",
+                "operator": "=",
+                "value": "true"
+              }
+            ]
+          }
+        ],
+        "thresholds": "",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "总里程",
+        "type": "singlestat",
+        "valueFontSize": "80%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "N/A",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "cacheTimeout": null,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "Prometheus",
+        "description": "",
+        "fill": 1,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 10
+        },
+        "id": 23,
+        "legend": {
+          "alignAsTable": false,
+          "avg": false,
+          "current": false,
+          "hideEmpty": false,
+          "hideZero": false,
+          "max": false,
+          "min": false,
+          "rightSide": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "connected",
+        "options": {},
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "tesla_vehicle_outside_temp_celsius{vin=\"$vin\"}",
+            "format": "time_series",
+            "groupBy": [
+              {
+                "params": [
+                  "Connected"
+                ],
+                "type": "tag"
+              }
+            ],
+            "intervalFactor": 1,
+            "legendFormat": "outside",
+            "measurement": "AllData",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT LAST(EA) FROM (SELECT max(\"charge_energy_added\") AS EA FROM \"AllData\" WHERE (\"Connected\" = 'true') AND $timeFilter GROUP BY \"Connected\", \"ConnectedOdometer\")",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "charge_energy_added"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "max"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "Connected",
+                "operator": "=",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "expr": "tesla_vehicle_inside_temp_celsius{vin=\"$vin\"}",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "inside",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "车辆温度",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "celsius",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "decimals": 2,
+        "description": "",
+        "fill": 1,
+        "gridPos": {
+          "h": 6,
+          "w": 12,
+          "x": 0,
+          "y": 12
+        },
+        "id": 21,
+        "interval": "",
+        "legend": {
+          "alignAsTable": false,
+          "avg": false,
+          "current": false,
+          "hideEmpty": false,
+          "hideZero": false,
+          "max": false,
+          "min": false,
+          "rightSide": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "connected",
+        "options": {},
+        "paceLength": 10,
+        "percentage": false,
+        "pointradius": 3,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "tesla_vehicle_odometer_miles_total{vin=\"$vin\"} * 1.61",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "${tesla_name}-总里程",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "行驶总里程（单位km）",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": 2,
+            "format": "lengthkm",
+            "label": "",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "decimals": null,
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      }
+    ],
+    "refresh": "1m",
+    "schemaVersion": 18,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "allValue": null,
+          "current": {
+            "text": "LRWYGCEE4MC002646",
+            "value": "LRWYGCEE4MC002646"
+          },
+          "datasource": "Prometheus",
+          "definition": "tesla_vehicle_name",
+          "hide": 1,
+          "includeAll": false,
+          "label": "vin",
+          "multi": true,
+          "name": "vin",
+          "options": [],
+          "query": "tesla_vehicle_name",
+          "refresh": 1,
+          "regex": "/.*vin=\"([^\"]*).*/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": true
+        },
+        {
+          "allValue": null,
+          "current": {
+            "text": "小电驴",
+            "value": "小电驴"
+          },
+          "datasource": "Prometheus",
+          "definition": "tesla_vehicle_name",
+          "hide": 2,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "tesla_name",
+          "options": [],
+          "query": "tesla_vehicle_name",
+          "refresh": 1,
+          "regex": "/.*name=\"([^\"]*).*/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {
+            "text": "2021.24.5 41dfd8d1ba8b",
+            "value": "2021.24.5 41dfd8d1ba8b"
+          },
+          "datasource": "Prometheus",
+          "definition": "tesla_vehicle_software_version",
+          "hide": 2,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "software_version",
+          "options": [],
+          "query": "tesla_vehicle_software_version",
+          "refresh": 2,
+          "regex": "/.*software_version=\"([^\"]*).*/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {
+            "text": "asleep",
+            "value": "asleep"
+          },
+          "datasource": "Prometheus",
+          "definition": "tesla_vehicle_state",
+          "hide": 2,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "tesla_state",
+          "options": [],
+          "query": "tesla_vehicle_state",
+          "refresh": 2,
+          "regex": "/.*state=\"([^\"]*).*/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
+    "time": {
+      "from": "now-7d",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "time_options": [
+        "5m",
+        "15m",
+        "1h",
+        "6h",
+        "12h",
+        "24h",
+        "2d",
+        "7d",
+        "30d"
+      ]
+    },
+    "timezone": "",
+    "title": "Tesla",
+    "uid": "LUW8M9rmk",
+    "version": 87
+  }
