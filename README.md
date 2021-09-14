@@ -18,5 +18,5 @@ curl -v "http://127.1:9610/metrics"
 ```
 
 ## grafana
-When the server is running, you can add exporter job into prometheus and `tesla.json` which is in grafana folder into your grafana server. Then you will see the images.
-![/grafana/tesla.png]
+When the server is running, you can add exporter job into prometheus and `tesla.json` which is in grafana folder into your grafana web dashboard. Then you will see the images.
+![tesla](/grafana/tesla.png)
